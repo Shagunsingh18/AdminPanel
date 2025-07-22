@@ -8,11 +8,11 @@ import axios from '@/api/axios.jsx';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import CourseForm from './CourseForm.jsx';
 
-const fetchCourses = () => axios.get('/courses').then((r) => r.data);
+const fetchCourses = () => axios.get('/course').then((r) => r.data);
 const fetchUsers = () => axios.get('/users').then((r) => r.data);
-const createCourse = (data) => axios.post('/courses', data).then((r) => r.data);
-const updateCourse = ({ id, ...data }) => axios.put(`/courses/${id}`, data).then((r) => r.data);
-const deleteCourse = (id) => axios.delete(`/courses/${id}`);
+const createCourse = (data) => axios.post('/course', data).then((r) => r.data);
+const updateCourse = ({ id, ...data }) => axios.put(`/course/${id}`, data).then((r) => r.data);
+const deleteCourse = (id) => axios.delete(`/course/${id}`);
 
 export default function Courses() {
   const qc = useQueryClient();
