@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+:root {
+  --color-brand-500: oklch(0.72 0.12 240);
+}
+
+
+
