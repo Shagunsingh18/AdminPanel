@@ -32,21 +32,22 @@ import { useContext } from 'react';
 
 const drawerWidth = 240;
 
-/* Styled main content to push below AppBar */
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
+  overflowX: 'hidden',
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: open ? drawerWidth : 0,
   [theme.breakpoints.down('md')]: {
-    marginLeft: 0, // on mobile the drawer is temporary
+    marginLeft: 0,
   },
 }));
+
 
 function AdminLayout() {
   const muiTheme = useTheme();
@@ -109,7 +110,8 @@ const isDesktop = useMediaQuery(muiTheme.breakpoints.up('md'));
   );
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-r from-sky-300 via-teal-300 to-purple-300">
+    // <div className="flex w-full min-h-screen bg-gradient-to-r from-sky-300 via-teal-300 to-purple-300">
+<div className="flex min-h-screen w-screen overflow-x-hidden bg-gradient-to-r from-sky-300 via-teal-300 to-purple-300">
 
 
       {/* Top bar */}

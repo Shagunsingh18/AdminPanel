@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import {
   useQuery,
@@ -38,7 +39,6 @@ export default function Courses() {
   if (isPending) return <p>Loading…</p>;
   if (isError) return <p className="text-red-500">Error: {error.message}</p>;
 
-  // Add enrollment count from users' enrolledCourses
   const courseEnrollments = courses.map((course) => {
     const count = users.filter((user) =>
       user.enrolledCourses?.includes(course.id)
@@ -49,54 +49,54 @@ export default function Courses() {
 
   return (
     <>
-      <div className='h-screen'>
+      <div className="min-h-screen w-full overflow-x-auto px-4 py-6">
         <header className="flex justify-between items-center mb-4">
-        <h2 className="text-xl text-gray-800 font-semibold">Courses</h2>
-        <button
-          className="bg-gray-500 border border-black-500 text-white px-4 py-2 rounded-md flex items-center gap-1"
-          onClick={() => setForm({})}
-        >
-          <Plus size={18} /> Add Course
-        </button>
-      </header>
+          <h2 className="text-xl text-gray-800 font-semibold">Courses</h2>
+          <button
+            className="bg-gray-500 border border-black-500 text-white px-4 py-2 rounded-md flex items-center gap-1"
+            onClick={() => setForm({})}
+          >
+            <Plus size={18} /> Add Course
+          </button>
+        </header>
 
-      <table className="w-full bg-white border-2 dark:bg-black rounded-xl overflow-hidden">
-        <thead>
-          <tr className="text-left  bg-gradient-to-r from-pink-300 via-sky-300 to-gray-400">
-            <th className="p-3">Title</th>
-            <th className="p-3">Category</th>
-            <th className="p-3">Description</th>
-            <th className="p-3">Enrolled</th>
-            <th className="p-3 w-28">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courseEnrollments.map((c) => (
-            <tr key={c.id} className="border-b bg-gray-300 border-gray-100 dark:border-gray-700">
-              <td className="p-3">{c.title}</td>
-              <td className="p-3">{c.category}</td>
-              <td className="p-3">{c.description}</td>
-              <td className="p-3">{c.enrolledUsers}</td>
-              <td className="p-3 flex gap-2">
-                <button
-                  onClick={() => setForm(c)}
-                  className="text-blue-600 hover:underline"
-                  title="Edit"
-                >
-                  <Pencil size={16} />
-                </button>
-                <button
-                  onClick={() => delMut.mutate(c.id)}
-                  className="text-red-600 hover:underline"
-                  title="Delete"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </td>
+        <table className="w-full border-2 rounded-xl bg-white dark:bg-black overflow-hidden">
+          <thead>
+            <tr className="text-left bg-gradient-to-r from-pink-300 via-sky-300 to-gray-400">
+              <th className="p-3">Title</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Description</th>
+              <th className="p-3">Enrolled</th>
+              <th className="p-3 w-28">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {courseEnrollments.map((c) => (
+              <tr key={c.id} className="border-b bg-gray-100 hover:bg-gray-200">
+                <td className="p-3">{c.title}</td>
+                <td className="p-3">{c.category}</td>
+                <td className="p-3">{c.description}</td>
+                <td className="p-3">{c.enrolledUsers}</td>
+                <td className="p-3 flex gap-2">
+                  <button
+                    onClick={() => setForm(c)}
+                    className="text-blue-600 hover:underline"
+                    title="Edit"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    onClick={() => delMut.mutate(c.id)}
+                    className="text-red-600 hover:underline"
+                    title="Delete"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {form !== null && (

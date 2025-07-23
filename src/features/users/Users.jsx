@@ -51,28 +51,29 @@ export default function Users() {
 
   return (
     <>
-      <div className='h-screen'>
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4" >
-  <h2 className="text-xl text-gray-800 font-semibold">Users</h2>
-  <div className="flex items-center gap-2 w-full md:w-auto">
-    <input
-      type="text"
-      className="border border-white px-4 py-2 rounded-md w-full md:w-64 bg-gray-400 text-white placeholder-white"
-      placeholder="Search by name or email"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
-    <button
-      className="bg-gray-400 border border-white text-white px-4 py-2 rounded-md flex items-center gap-1"
-      onClick={() => setForm({})}
-    >
-      <Plus size={18} /> Add User
-    </button>
-  </div>
-</header>
+      <div className="min-h-screen w-full bg-gradient-to-r from-sky-300 via-teal-300 to-purple-300">
+  <div className="flex flex-col gap-4 px-4 py-6 max-w-full overflow-x-auto">
+    <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <h2 className="text-xl text-gray-800 font-semibold">Users</h2>
+      <div className="flex items-center gap-2 md:w-auto w-full">
+        <input
+          type="text"
+          className="border border-white px-4 py-2 rounded-md w-full md:w-64 bg-gray-400 text-white placeholder-white"
+          placeholder="Search by name or email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button
+          className="bg-gray-400 border border-white text-white px-4 py-2 rounded-md flex items-center gap-1"
+          onClick={() => setForm({})}
+        >
+          <Plus size={18} /> Add User
+        </button>
+      </div>
+    </header>
 
-
-      <table className="w-full border-2 rounded-xl overflow-hidden">
+    <div className="overflow-x-auto">
+      <table className="min-w-full border-2 rounded-xl bg-white">
         <thead>
           <tr className="text-left bg-gradient-to-r from-pink-300 via-amber-100 to-gray-400">
             <th className="p-3">Name</th>
@@ -81,53 +82,55 @@ export default function Users() {
             <th className="p-3 w-28">Actions</th>
           </tr>
         </thead>
-        <tbody >
+        <tbody>
           {filteredUsers.map((u) => (
-            <tr key={u.id} className="border-b bg-white  hover:bg-gray-100" >
-              <td className="p-3 ">{u.name}</td>
+            <tr key={u.id} className="border-b hover:bg-gray-100">
+              <td className="p-3">{u.name}</td>
               <td className="p-3">{u.email}</td>
               <td className="p-3 capitalize">{u.role}</td>
               <td className="p-3 flex gap-2">
-  <button
-    onClick={() => navigate(`/users/${u.id}`)}
-    className="text-blue-600 font-medium hover:underline"
-    title="View Profile"
-  >
-    View
-  </button>
-  <button
-    onClick={() => setForm(u)}
-    className="text-blue-600 hover:underline"
-    title="Edit"
-  >
-    <Pencil size={16} />
-  </button>
-  <button
-    onClick={() => delMut.mutate(u.id)}
-    className="text-red-600 hover:underline"
-    title="Delete"
-  >
-    <Trash2 size={16} />
-  </button>
-</td>
-
+                <button
+                  onClick={() => navigate(`/users/${u.id}`)}
+                  className="text-blue-600 font-medium hover:underline"
+                  title="View Profile"
+                >
+                  View
+                </button>
+                <button
+                  onClick={() => setForm(u)}
+                  className="text-blue-600 hover:underline"
+                  title="Edit"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button
+                  onClick={() => delMut.mutate(u.id)}
+                  className="text-red-600 hover:underline"
+                  title="Delete"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      </div>
+    </div>
+  </div>
 
-      {form !== null && (
-        <UserForm
-          initial={form}
-          onCancel={() => setForm(null)}
-          onSubmit={(data) =>
-            form.id
-              ? editMut.mutate({ id: form.id, ...data })
-              : addMut.mutate(data)
-          }
-        />
-      )}
+  {form !== null && (
+    <UserForm
+      initial={form}
+      onCancel={() => setForm(null)}
+      onSubmit={(data) =>
+        form.id
+          ? editMut.mutate({ id: form.id, ...data })
+          : addMut.mutate(data)
+      }
+    />
+  )}
+</div>
+
     </>
   );
-}
+}  
