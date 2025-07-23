@@ -17,7 +17,7 @@ const Settings       = lazy(() => import('./features/settings.jsx'));
 const Reports        = lazy(() => import('./features/reports.jsx'));
 const Security       = lazy(() => import('./features/security/SecurityManagement.jsx'));
 const Maintenance    = lazy(() => import('./features/maintenance/MaintenanceUpdates.jsx'));
-const Analytics       = lazy(() => import('./features/analytics/ReportingAnalytics.jsx'));
+const Analytics      = lazy(() => import('./features/analytics/ReportingAnalytics.jsx'));
 
 const router = createBrowserRouter([
   {
