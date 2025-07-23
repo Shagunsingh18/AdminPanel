@@ -7,7 +7,7 @@ import {
   createBrowserRouter,
   Navigate,
 } from 'react-router-dom';
-import UserDetails from './features/users/UserDetails.jsx';
+// import UserDetails from './features/users/UserDetails.jsx';
 import AdminLayout from './layouts/AdminLayout.jsx';
 
 const Dashboard      = lazy(() => import('./features/dashboard/SystemMonitoring.jsx'));
@@ -23,17 +23,17 @@ const router = createBrowserRouter([
   {
     element: <AdminLayout />,
     errorElement: <ErrorBoundary />,
-    children: [
-      { index: true, element: <Dashboard /> }, // / (System Monitoring)
-      { path: 'users',       element: <Users /> },
-      { path: 'courses',     element: <Courses /> },
-      { path: 'settings',  element: <Settings /> },
-      { path: 'reports',     element: <Reports /> },
-      { path: 'analytics',   element: <Analytics /> },       
-      { path: 'security',    element: <Security /> },        
-      { path: 'maintenance', element: <Maintenance /> },      
-      { path: '*',           element: <Navigate to="/" replace /> },
-      {path: '/users/:id',element: <UserDetails />}
+   children: [
+      { index: true, element: <Dashboard /> },
+      { path: 'users', element: <Users /> },
+      // { path: 'users/:id', element: <UserDetails /> },  
+      { path: 'courses', element: <Courses /> },
+      { path: 'settings', element: <Settings /> },
+      { path: 'reports', element: <Reports /> },
+      { path: 'analytics', element: <Analytics /> },
+      { path: 'security', element: <Security /> },
+      { path: 'maintenance', element: <Maintenance /> },
+      { path: '*', element: <Navigate to="/" replace /> },
     ],
   },
 ]);

@@ -1,49 +1,35 @@
-
 import { useState } from 'react';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import axios from '@/api/axios.jsx';
 import { Pencil, Trash2, Plus } from 'lucide-react';
-import CourseForm from './CourseForm.jsx';
-
-const fetchCourses = () => axios.get('/course').then((r) => r.data);
-const fetchUsers = () => axios.get('/users').then((r) => r.data);
-const createCourse = (data) => axios.post('/course', data).then((r) => r.data);
-const updateCourse = ({ id, ...data }) => axios.put(`/course/${id}`, data).then((r) => r.data);
-const deleteCourse = (id) => axios.delete(`/course/${id}`);
+import mockCourses from '@/data/mockCourses';
+import mockUsers from '@/data/mockUsers';
+import CourseForm from './CourseForm';
 
 export default function Courses() {
-  const qc = useQueryClient();
+  const [courses, setCourses] = useState(mockCourses);
+  const [users] = useState(mockUsers);
   const [form, setForm] = useState(null);
 
-  const { data: courses = [], isPending, isError, error } = useQuery({
-    queryKey: ['courses'],
-    queryFn: fetchCourses,
-  });
+  const handleDelete = (id) => {
+    const filtered = courses.filter(course => course.id !== id);
+    setCourses(filtered);
+    setForm(null);
+  };
 
-  const { data: users = [] } = useQuery({
-    queryKey: ['users'],
-    queryFn: fetchUsers,
-  });
+  const handleSubmit = (data) => {
+    if (form?.id) {
+      // Edit mode
+      const updated = courses.map(course => course.id === form.id ? { ...form, ...data } : course);
+      setCourses(updated);
+    } else {
+      // Add mode
+      const newCourse = { ...data, id: Date.now().toString() };
+      setCourses([...courses, newCourse]);
+    }
+    setForm(null);
+  };
 
-  const invalidate = () =>
-    qc.invalidateQueries({ queryKey: ['courses'] }).then(() => setForm(null));
-
-  const addMut = useMutation({ mutationFn: createCourse, onSuccess: invalidate });
-  const editMut = useMutation({ mutationFn: updateCourse, onSuccess: invalidate });
-  const delMut = useMutation({ mutationFn: deleteCourse, onSuccess: invalidate });
-
-  if (isPending) return <p>Loading…</p>;
-  if (isError) return <p className="text-red-500">Error: {error.message}</p>;
-
-  const courseEnrollments = courses.map((course) => {
-    const count = users.filter((user) =>
-      user.enrolledCourses?.includes(course.id)
-    ).length;
-
+  const courseEnrollments = courses.map(course => {
+    const count = users.filter(user => user.enrolledCourses?.includes(course.id)).length;
     return { ...course, enrolledUsers: count };
   });
 
@@ -51,10 +37,10 @@ export default function Courses() {
     <>
       <div className="min-h-screen w-full overflow-x-auto px-4 py-6">
         <header className="flex justify-between items-center mb-4">
-          <h2 className="text-xl text-gray-800 font-semibold">Courses</h2>
+          <h2 className="text-xl font-semibold text-gray-800">Courses</h2>
           <button
-            className="bg-gray-500 border border-black-500 text-white px-4 py-2 rounded-md flex items-center gap-1"
             onClick={() => setForm({})}
+            className="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-1"
           >
             <Plus size={18} /> Add Course
           </button>
@@ -62,7 +48,7 @@ export default function Courses() {
 
         <table className="w-full border-2 rounded-xl bg-white dark:bg-black overflow-hidden">
           <thead>
-            <tr className="text-left bg-gradient-to-r from-pink-300 via-sky-300 to-gray-400">
+            <tr className="bg-gradient-to-r from-pink-300 via-sky-300 to-gray-400 text-left">
               <th className="p-3">Title</th>
               <th className="p-3">Category</th>
               <th className="p-3">Description</th>
@@ -71,26 +57,18 @@ export default function Courses() {
             </tr>
           </thead>
           <tbody>
-            {courseEnrollments.map((c) => (
+            {courseEnrollments.map(c => (
               <tr key={c.id} className="border-b bg-gray-100 hover:bg-gray-200">
                 <td className="p-3">{c.title}</td>
                 <td className="p-3">{c.category}</td>
                 <td className="p-3">{c.description}</td>
                 <td className="p-3">{c.enrolledUsers}</td>
                 <td className="p-3 flex gap-2">
-                  <button
-                    onClick={() => setForm(c)}
-                    className="text-blue-600 hover:underline"
-                    title="Edit"
-                  >
-                    <Pencil size={16} />
+                  <button onClick={() => setForm(c)} title="Edit">
+                    <Pencil size={16} className="text-blue-600" />
                   </button>
-                  <button
-                    onClick={() => delMut.mutate(c.id)}
-                    className="text-red-600 hover:underline"
-                    title="Delete"
-                  >
-                    <Trash2 size={16} />
+                  <button onClick={() => handleDelete(c.id)} title="Delete">
+                    <Trash2 size={16} className="text-red-600" />
                   </button>
                 </td>
               </tr>
@@ -103,11 +81,7 @@ export default function Courses() {
         <CourseForm
           initial={form}
           onCancel={() => setForm(null)}
-          onSubmit={(data) =>
-            form.id
-              ? editMut.mutate({ id: form.id, ...data })
-              : addMut.mutate(data)
-          }
+          onSubmit={handleSubmit}
         />
       )}
     </>
