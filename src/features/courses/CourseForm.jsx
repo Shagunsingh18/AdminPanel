@@ -17,7 +17,7 @@ export default function CourseForm({ initial, onCancel, onSubmit }) {
     <div className="fixed inset-0 dark:bg-gray-600 flex items-center justify-center z-50">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white text-white dark:bg-gray-600 p-6 rounded-xl w-96 space-y-4"
+        className="bg-white text-black p-6 rounded-xl w-96 space-y-4"
       >
         <h3 className="font-semibold text-lg mb-2">
           {initial.id ? 'Edit Course' : 'Add Course'}

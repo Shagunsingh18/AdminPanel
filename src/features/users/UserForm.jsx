@@ -36,7 +36,7 @@ export default function UserForm({ initial, onCancel, onSubmit }) {
           <label className="block text-sm mb-1">Name</label>
           <input
             {...register('name')}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 text-black border rounded"
           />
           {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
         </div>
@@ -45,7 +45,7 @@ export default function UserForm({ initial, onCancel, onSubmit }) {
           <label className="block text-sm mb-1">Email</label>
           <input
             {...register('email')}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 text-black border rounded"
             disabled={!!initial.id}   /* lock email on edit */
           />
           {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
